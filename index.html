@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>JS Bin</title>
+  <!--suppress CssInvalidPseudoSelector -->
   <style>
     /* meter styles */
     meter::-webkit-meter-horizontal-bar {
@@ -131,7 +131,7 @@
   </style>
   <style>
     body {
-      font-family: Helvetica;
+      font-family: Helvetica,serif;
       font-size: 14px;
     }
     meter, input[type=range] {
@@ -184,7 +184,7 @@
     <div class="value"></div>
   </div>
   <div class="audio">
-    <audio src="http://www.soundjay.com/button/beep-01a.mp3" controls="controls" volume="0.2"></audio>
+    <audio src="assets/beep-01a.mp3" controls="controls"></audio>
   </div>
 </div>
 
@@ -254,7 +254,7 @@
   /* global AudioContext, SoundMeter */
 
   navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-  $(function(){
+  document.body.onload = ('load', () => {
     'use strict';
     var audio = document.querySelector('audio');
     var instantMeter = document.querySelector('#instant meter');
@@ -271,10 +271,10 @@
     var freezeInput = document.querySelector('#freeze input[type=range]');
     var freezeInputValue = document.querySelector('#freeze .value');
 
-    audio.volume = 0.2;
-
     try {
       window.AudioContext = window.AudioContext || window.webkitAudioContext;
+      // @todo: don't use global variables!
+      // fuck you, I'll do what I want.
       window.audioContext = new AudioContext();
     } catch (e) {
       alert('Web Audio API not supported.');
@@ -301,9 +301,9 @@
         freezeInputValue.innerText = freezeInput.value;
 
         if( audio.paused && !freeze && (
-          soundMeter.instant >= instantMax.value ||
-          soundMeter.slow >= slowMax.value ||
-          soundMeter.clip >= clipMax.value
+                soundMeter.instant >= instantMax.value ||
+                soundMeter.slow >= slowMax.value ||
+                soundMeter.clip >= clipMax.value
         )) {
           console.log('limit!');
           console.log('freeze start');
@@ -324,7 +324,6 @@
     }
 
     window.navigator.getUserMedia(constraints, successCallback, errorCallback);
-
   });
 
 </script>
